@@ -1,0 +1,65 @@
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>To do lizt</title>
+ 
+  <!-- Favicons -->
+  <!-- <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon"> -->
+
+  <!-- Google Fonts -->
+  
+
+  <!-- Vendor CSS Files -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+  <link href="assets/vendor/icofont/icofont.min.css" rel="stylesheet">
+  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <!-- <link href="assets/vendor/venobox/venobox.css" rel="stylesheet">
+  <link href="assets/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet"> -->
+
+  <!-- Template Main CSS File -->
+  <link href="assets/css/style.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <section>
+        <form action="/add" method="POST" id="createTask">
+        <div class="container">
+          <div class="row justify-content-center">
+
+            <div class="col-12 col-md-8 col-lg-8 col-xl-6">
+              <div class="row">
+                <div class="col text-center">
+                  <h1>Create Task</h1>
+                </div>
+              </div>
+              <div class="row align-items-center">
+                <div class="col mt-4">
+                    <label for="exampleFormControlTextarea1">Label:</label>
+                  <input type="text" name="task" class="form-control" placeholder="Task Name" required>
+                </div>
+              </div>
+              <div class="row align-items-center mt-4">
+                    <label for="exampleFormControlTextarea1">Task Description:</label>
+                    <textarea class="form-control" form="createTask" name="desc" id="exampleFormControlTextarea1" rows="3"></textarea>
+              </div>
+              
+              <div class="row justify-content-start mt-4">
+                <div class="col">
+                    <input type="hidden" name="uuid" value='<%= data[0].uuid %>'>
+                  <button type="submit" class="btn btn-primary mt-4">Create Task</button>
+                </div>
+                <a href='/home'>Go Back</a>
+              </div>
+            </div>
+
+          
+          
+        </div>
+    </form>
+      </section>
+  </body>
+  
+</html>
