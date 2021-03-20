@@ -1,90 +1,74 @@
+<html>
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
-  <title>To do lizt</title>
- 
-  <!-- Favicons -->
-  <!-- <link href="assets/img/favicon.png" rel="icon">
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon"> -->
-
-  <!-- Google Fonts -->
-  
-
-  <!-- Vendor CSS Files -->
+  <title>To do list</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-  <link href="assets/vendor/icofont/icofont.min.css" rel="stylesheet">
-  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-  <!-- <link href="assets/vendor/venobox/venobox.css" rel="stylesheet">
-  <link href="assets/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet"> -->
-
-  <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
-
 </head>
-
 <body>
-
-
         <ul>
-          
-       
-            <center> <h3 style="margin-top:50px;">Welcome <%= data[0].username %>!</center></h3>
-           
            <button type="button" class="btn btn-dark" style="float:right; margin-right: 10px;"><a href="/logout">Log-Out</a></button>
-           
         </ul>
-    
-
     </div>
-    
   </header>
 
 <body>
 <section id="services" class="services section-bg">
     <div class="container">
-
-      <div class="section-title">
-        <span>Things to do</span>
-        <h2>Things to do</h2>
-        <hr>
-        <% var count = 0 %>
-        <% for(i=0;i < tasks.length ; i++) { %>
-            <% if(tasks[i].status == 'pending'){%>
-                <% ++count %>
-            <% } %>    
-        <% } %>
-        <p>Tasks pending today: <%= count %></p>
+      <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+          <h1 class="display-4">To Do List</h1>
+          <h3 style="margin-top:50px;">Welcome <%= data[0].username %>!</h3>
+        </div>
       </div>
-
-      <div class="row">
-   
-            <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" style="margin-bottom: 1vw;">
-                <a href="/add"> <div class="icon-box" style="height: 325px;width: 325px;">
-                <div class="icon">  <i class="bx bx-plus"></i></div>
-                <h4> Add new task</h4>
-                <p>A new task appears on the right side of this box</p>
-                </div></a>  
-            </div>
-
-          
-            <% for(i=0;i < tasks.length ; i++) { %>
-            <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" style="margin-bottom: 1vw;">
-                <div class="icon-box" style="height: 325px;width: 325px;">
-                    <div class="icon"><i class="bx bx-file"></i></div>
-                    <h4><a href="#"><%= tasks[i].task %></a></h4>
-                    <h6><%= tasks[i].description %> </h6>
-                    <p> Status:&nbsp;<em> <%= tasks[i].status %></em> </p> <hr>
-                    <%if(tasks[i].status == 'pending'){%>
-                    <a href="/update?id=<%= tasks[i].id %>" style="color: rgba(19, 117, 30, 0.687);"><i class="bx bx-check"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
-                    <% } %>
-                    <a href="/delete?id=<%= tasks[i].id %>" style="color: grey;"><i class="bx bx-trash"></i></a>
-                </div>
-            </div> 
-            <% } %>
-      </div>
-
+        <div class="row">
+            <center>
+              <button type="button" class="btn btn-primary" ><a href="/add" style="color:white !important;">Add Task</a></button>
+            </center> <br><br>
+              <% for(i=0;i < tasks.length ; i++) { %>
+                <table class="table table-striped table-dark">
+                  <thead>
+                    <tr>
+                      <th scope="col">Task Number</th>
+                      <th scope="col">Task</th>
+                      <th scope="col">Description</th>
+                      <th scope="col">Status</th>
+                      <th scope="col">Completed at</th>
+                      <th scope="col">Delete</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row"><%= i+1 %></th>
+                      <td><%= tasks[i].task %></td>
+                      <td><%= tasks[i].description %></td>
+                      <td>
+                          <%if(tasks[i].status =='pending'){ %>
+                            Not yet completed
+                          <% } else{ %>
+                            Completed
+                          <% } %>
+                      </td>
+                      <td> <%if(tasks[i].status == 'pending'){%>
+                          <button type="button" class="btn btn-success"><a href="/update?id=<%= tasks[i].id %>" style="color:white;">Click to Complete</button>
+                          </a>
+                          <% } else{ %>
+                            <%= tasks[i].completed_at.toLocaleString(); %>
+                          <% } %>
+                      <td>
+                          <button type="button" class="btn btn-danger"><a href="/delete?id=<%= tasks[i].id %>" style="color: white;">Click to Delete</button>
+                          </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              <% } %>
+        </div>
     </div>
 </section>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 </hmtl>
