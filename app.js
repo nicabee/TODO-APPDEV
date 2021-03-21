@@ -8,7 +8,7 @@ const {v4 : uuidv4} = require('uuid');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}))
 app.set('view engine','ejs')
-app.use( express.static("public"));
+app.use(express.static("public"));
 var user
 var dbConnection = mysql.createPool({
         connectionLimit: 10,        
@@ -54,7 +54,6 @@ app.get("/home",(req,res) =>{
 app.post("/register", (req,res) =>{
     var data = req.body;
     if(data.password === data.passwordConfirmation){
-
         const tok = uuidv4();
         let salt = bcrypt.genSaltSync(10);
         let userItem = {
@@ -62,14 +61,39 @@ app.post("/register", (req,res) =>{
             username: data.username,
             password: bcrypt.hashSync(data.password, salt),
         };
-        dbConnection.query('INSERT INTO users set ?', userItem,
-            function(err, rows) {
+        function checkIfExists(callback) {
+            var sql = "SELECT * FROM users WHERE username = " + mysql.escape(data.username);
+            var rows = 0;
+            dbConnection.query(sql, function (err, result, fields) {
                 if (err) {
-                    throw err
+                    callback(err, null);
                 }
-                res.render("index",{status:"account created successfully!"});
+                else {
+                    rows += result.length;
+                    callback(null, rows > 0);
+                }
+            });
+        }
+        
+        checkIfExists(function(err, isExists) {
+            if (err) {
+                throw err;
             }
-        )   
+            else {
+                if(isExists == false){
+                dbConnection.query('INSERT INTO users set ?', userItem,
+                    function(err, rows) {
+                            if (err) {
+                                throw err
+                            }
+                            res.render("index");
+                        }
+                    )  
+                }else{
+                    res.render("register", {errors: "Username already exists!"})
+                }
+            }
+        });
     }else{
         res.render("register", {errors: "Passwords do not match!"})
     }
@@ -77,28 +101,47 @@ app.post("/register", (req,res) =>{
 
 app.post("/login", (req,res)=>{
     var data = req.body
-   
-    dbConnection.query('SELECT username, password, uuid FROM users WHERE username = ?', data.username,
-        function(err, rows) {
+    function checkIfExists(callback) {
+        var sql = "SELECT * FROM users WHERE username = " + mysql.escape(data.username);
+        var rows = 0;
+        dbConnection.query(sql, function (err, result, fields) {
             if (err) {
-                throw err
-            }else{
-                if(rows[0].username === data.username){
-                    bcrypt.compare(data.password,rows[0].password).then((isMatch) => {   
+                callback(err, null);
+            }
+            else {
+                rows += result.length;
+                callback(null, rows > 0);
+            }
+        });
+    }
+    checkIfExists(function(err, isExists) {
+        if (err) {
+            throw err;
+        }
+        else {
+            if(isExists == true){
+                dbConnection.query('SELECT username, password, uuid FROM users WHERE username = ?', data.username,
+                function(err, rows) {
+                    if (err) {
+                        throw err
+                    }else{
+                        bcrypt.compare(data.password,rows[0].password).then((isMatch) => {   
                         if (isMatch) {   
                             user = rows;
                             res.redirect("/home");
-                    } else {
-                        res.render("index",{ err:"Password is incorrect!"} ) 
+                        } else {
+                            res.render("index",{ err:"Password is incorrect!"} ) 
+                        }
+                        });
                     }
-                    });
-                }else{
-                    res.render("index",{err:"Username does not exist"});
                 }
+            ) 
+            }else{
+                res.render("index",{err:"Username does not exist"});
             }
-            
         }
-    )
+    });
+    
 })
 
 app.post("/add", (req,res)=>{
