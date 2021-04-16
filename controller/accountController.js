@@ -15,8 +15,9 @@ exports.loginAccount = async (req, res) => {
             }else{
                 bcrypt.compare(req.body.password,user.password).then((isMatch) => {   
                     if (isMatch) {   
-                        user1 = user;
+                        //user1 = user;
                         console.log("Saksespol");
+                        req.session.user1 = user;
                         res.redirect("/home");
                          
                     } else {
@@ -50,6 +51,3 @@ exports.createAccount = async (req, res) => {
     }
 }
 
-exports.goHome = async (req, res) => {
-    console.log(user1.uuid);
-}

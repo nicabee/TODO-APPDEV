@@ -26,9 +26,10 @@ const task = instance.sequelize.define("tasks",{
       }
 },
   {
-    created_at: true,
-    completed_at: true,
-    tableName: "tasks"
+    // created_at: true,
+    // completed_at: true,
+    // tableName: "tasks"
+    timestamps: false
   }
 )
 
