@@ -2,8 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    
-     await queryInterface.createTable('tasks', { 
+    await queryInterface.createTable('tasks', { 
       id: {
         type: Sequelize.BIGINT,
         autoIncrement: true,
@@ -26,12 +25,12 @@ module.exports = {
           type: Sequelize.STRING,
           allowNull: false
       },
-      created_at: {
+      createdAt: {
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        defaultValue: Sequelize.NOW,
         allowNull: false
       },
-      completed_at: {
+      completedAt: {
         type: Sequelize.DATE
       }
     });
@@ -39,7 +38,6 @@ module.exports = {
 
   down: async (queryInterface, Sequelize) => {
 
-   await queryInterface.dropTable('tasks');
-     
+    await queryInterface.dropTable('tasks');
   }
 };

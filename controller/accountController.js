@@ -1,30 +1,43 @@
 const account = require("../models/user");
 const {v4 : uuidv4} = require('uuid');
 const bcrypt = require('bcrypt');
-var user1;
+const task = require("../models/task");
+
 exports.loginAccount = async (req, res) => {
         let data = await account.model.findOne(
+            
             {
                 where: {
                     username: req.body.username
                 }
             }
+            
         ).then(function(user){
             if(!user){
                 res.render("index.ejs", {err: "Account does not exist"});
             }else{
-                bcrypt.compare(req.body.password,user.password).then((isMatch) => {   
-                    if (isMatch) {   
-                        //user1 = user;
-                        console.log("Saksespol");
-                        req.session.user1 = user;
-                        res.redirect("/home");
-                         
-                    } else {
-                        res.render("index",{ err:"Password is incorrect!"} ) 
+               bcrypt.compare(req.body.password,user.password).then((isMatch) => {   
+                   if (isMatch) {   
+                        let data2 = task.model.findAll(
+                            {
+                            where: {
+                                uuid: user.uuid
+                            }
+                        }).then(function(user2){
+                            if(!user2){
+                                console.log("HAKDOG");
+                            }else{
+                                console.log("Saksespol");
+                                req.session.user1 = user;
+                                req.session.usertwo = user2;
+                                res.redirect("/home");
+                            }
+                        })
+                   } 
+                   else {
+                       res.render("index",{ err:"Password is incorrect!"} ) 
                     }
-                    });
-                
+                });
             }
         })
 }

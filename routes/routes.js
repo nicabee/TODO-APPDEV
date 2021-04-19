@@ -20,13 +20,21 @@ let initWebRoutes = (app) => {
     router.get("/register", (req,res) =>{
         res.render("register");
     })
-    //router.get("/home", taskController.displayHome);
-    router.get("/home", async (req,res) =>{
+   
+    
+    router.get("/home",  (req,res) =>{
         var message = req.session.user1;
-        //var message2 = await taskController.displayHome;
-        res.render("home", {data: message});
+        var message2 = req.session.usertwo;
+        res.render("home", {data: message, tasks:message2});
+
     })
 
+    router.get("/add",  (req,res) =>{
+           var message = req.session.user1;
+           res.render("addTask", {data: message});
+ 
+    })
+    router.post("/add", taskController.createTask);
     router.post("/register", accountController.createAccount);
     router.post("/login", accountController.loginAccount);
     

@@ -1,29 +1,39 @@
 const task = require("../models/task");
 var user2;
-exports.displayHome = async (req, res) => {
-    let data = await task.model.findOne(
-        {
-            where: {
-                uuid: req.session.user1.uuid
+exports.createTask = async (req, res) => {
+   // try{
+        
+        let data = await task.model.create({
+            uuid: req.body.uuid,
+            task: req.body.task,
+            description: req.body.desc,
+            status: "pending"
+            }      
+        ).then(user => {
+            if(!user){
+                console.log("oopps");
+            }else{
+                console.log("Task Generated");
+                let data2 = task.model.findAll(
+                    {
+                    where: {
+                        uuid: user.uuid
+                    }
+                }).then(function(user2){
+                    if(!user2){
+                        console.log("HAKDOG1");
+                    }else{
+                        console.log("taskcontroller");
+                        req.session.usertwo = user2;
+                        res.redirect("/home");
+                    }
+                })
+
             }
-        }
-    ).then(function(user){
-        if(!user){
-            console.log("ops");
-        }else{
-            // bcrypt.compare(req.body.password,user.password).then((isMatch) => {   
-                // if (isMatch) {   
-                //     //user1 = user;
-                    console.log("Saksespol2");
-                    //req.session.user2 = user;
-                    user2 = user;
-                   // res.redirect("/home");
-                     return user2;
-                // } else {
-                //     res.render("index",{ err:"Password is incorrect!"} ) 
-                // }
-                // });
             
-        }
-    })
+        })
+        
+    // }catch(err){
+    //     res.render("home", {errors: "Failed to add task!"});
+    // }
 }

@@ -23,11 +23,23 @@ const task = instance.sequelize.define("tasks",{
       status: {
           type: DataTypes.STRING,
           allowNull: false
+      },
+      createdAt: {
+     //   field: 'created_at',
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+        allowNull: false
+      },
+      completedAt: {
+     //   field: 'completed_at',
+        type: DataTypes.DATE
       }
 },
   {
-    // created_at: true,
-    // completed_at: true,
+    // createdAt: true,
+    // completedAt: true,
+    // updatedAt: false,
+    // deletedAt: false,
     // tableName: "tasks"
     timestamps: false
   }
