@@ -1,5 +1,5 @@
 # TODO-APPDEV
-to do for appdev
+To Do List for appdev
 
 
 Made using HTML, Bootstrap, NodeJS, Express, and MySQL(DB).
