@@ -25,6 +25,7 @@ let initWebRoutes = (app) => {
     router.get("/home",  (req,res) =>{
         var message = req.session.user1;
         var message2 = req.session.usertwo;
+       // var message = req.session.userthree;
         res.render("home", {data: message, tasks:message2});
 
     })
@@ -34,6 +35,9 @@ let initWebRoutes = (app) => {
            res.render("addTask", {data: message});
  
     })
+
+    router.get("/update", taskController.updateTask);
+    router.get("/delete", taskController.deleteTask);
     router.post("/add", taskController.createTask);
     router.post("/register", accountController.createAccount);
     router.post("/login", accountController.loginAccount);

@@ -1,7 +1,8 @@
+const { response } = require("express");
 const task = require("../models/task");
 var user2;
 exports.createTask = async (req, res) => {
-   // try{
+ 
         
         let data = await task.model.create({
             uuid: req.body.uuid,
@@ -21,9 +22,9 @@ exports.createTask = async (req, res) => {
                     }
                 }).then(function(user2){
                     if(!user2){
-                        console.log("HAKDOG1");
+                        console.log("Task Creation Failed");
                     }else{
-                        console.log("taskcontroller");
+                        console.log("Task Creation Successful");
                         req.session.usertwo = user2;
                         res.redirect("/home");
                     }
@@ -33,7 +34,71 @@ exports.createTask = async (req, res) => {
             
         })
         
-    // }catch(err){
-    //     res.render("home", {errors: "Failed to add task!"});
-    // }
+   
+}
+
+exports.updateTask = async (req, res) => {
+        console.log(req.query.user);
+         let data = await task.model.update(
+             {status: "completed"},
+            {
+                where:{
+                    id: req.query.id
+                }
+            }      
+         ).then(user => {
+             if(!user){
+                console.log("Unable to update status");
+             }else{
+                console.log("Task Status Updated");
+                let data2 = task.model.findAll(
+                    {
+                    where: {
+                        uuid: req.query.user
+                    },
+                 }).then(user2 => {
+                        if(!user2){
+                            console.log("task cant be found");
+                        }else{
+                            console.log("task found");
+                            req.session.usertwo = user2;
+                            res.redirect("/home");
+                        }
+                    })
+             }
+             
+         })
+ }
+
+ exports.deleteTask = async (req, res) => {
+     console.log(req.query.user);
+     let data = await task.model.destroy(
+        {
+            where:{
+                id: req.query.id
+            }
+        }      
+     ).then(user => {
+         if(!user){
+            console.log("oopps");
+         }else{
+            console.log("Task Deleted");
+            let data2 = task.model.findAll(
+                {
+                where: {
+                    deletedAt: null,
+                    uuid: req.query.user
+                },
+             }).then(user2 => {
+                    if(!user2){
+                        console.log("task not found");
+                    }else{
+                        console.log("task found");
+                        req.session.usertwo = user2;
+                        res.redirect("/home");
+                    }
+                })
+         }
+         
+     })
 }

@@ -25,9 +25,9 @@ exports.loginAccount = async (req, res) => {
                             }
                         }).then(function(user2){
                             if(!user2){
-                                console.log("HAKDOG");
+                                console.log("Login Failed");
                             }else{
-                                console.log("Saksespol");
+                                console.log("Login Successful");
                                 req.session.user1 = user;
                                 req.session.usertwo = user2;
                                 res.redirect("/home");

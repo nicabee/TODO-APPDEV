@@ -51,13 +51,13 @@
                     <% } %>
                 </td>
                 <td> <%if(tasks[i].status == 'pending'){%>
-                    <button type="button" class="btn btn-success"><a href="/update?id=<%= tasks[i].id %>" style="color:white;">Click to Complete</button>
+                    <button type="button" class="btn btn-success"><a href="/update?id=<%= tasks[i].id %>&user=<%= data.uuid %>" style="color:white;">Click to Complete</button>
                     </a>
                     <% } else{ %>
-                      <%= tasks[i].completed_at.toLocaleString(); %>
+                      <%= tasks[i].updatedAt.toLocaleString().replace(/T/, ' ').replace(/\..+/, ''); %>
                     <% } %>
                 <td>
-                    <button type="button" class="btn btn-danger"><a href="/delete?id=<%= tasks[i].id %>" style="color: white;">Click to Delete</button>
+                    <button type="button" class="btn btn-danger"><a href="/delete?id=<%= tasks[i].id %>&user=<%= data.uuid %>" style="color: white;">Click to Delete</button>
                     </a>
                 </td>
               </tr>
